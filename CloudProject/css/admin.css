@@ -299,19 +299,19 @@ main .container .left .profile {
 }
 
 .middle .templates .template:nth-child(1) {
-    background: url('/CloudProject/assets/web.jpg') no-repeat center center/cover; 
+    background: url('../assets/web.jpg') no-repeat center center/cover; 
 }
 .middle .templates .template:nth-child(2) {
-    background: url('/CloudProject/assets/grafis.jpg') no-repeat center center/cover; 
+    background: url('../assets/grafis.jpg') no-repeat center center/cover; 
 }
 .middle .templates .template:nth-child(3) {
-    background: url('/CloudProject/assets/ui.jpg') no-repeat center center/cover; 
+    background: url('../assets/ui.jpg') no-repeat center center/cover; 
 }
 .middle .templates .template:nth-child(4) {
-    background: url('/CloudProject/assets/tools.jpg') no-repeat center center/cover; 
+    background: url('../assets/tools.jpg') no-repeat center center/cover; 
 }
 .middle .templates .template:nth-child(5) {
-    background: url('/CloudProject/assets/font.jpg') no-repeat center center/cover; 
+    background: url('../assets/font.jpg') no-repeat center center/cover; 
 }
 
 /* ---------------------------------------------------- PRODUCTS --------------------------------------- */
