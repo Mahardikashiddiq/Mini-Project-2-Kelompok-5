@@ -2,9 +2,14 @@
 
 2. Folder app: Folder utama tempat kode aplikasi berada. Di dalam folder app, terdapat beberapa subfolder, termasuk Http, yang digunakan untuk menyimpan kontroler, middleware, dan request yang digunakan oleh aplikasi.
 
-3. Subfolder Http: Folder ini berisi file yang terkait dengan HTTP request, seperti Controllers, Middleware, dan Requests. File-file di sini digunakan untuk menangani request yang datang dari pengguna (browser, API, dll.).
+3. Subfolder Http: Folder ini berisi file yang terkait dengan HTTP request, seperti Controllers, Middleware, dan Requests. File-file di sini digunakan untuk menangani request yang datang dari pengguna (browser, API, dll.). Terdapat file controllers dengan penjelasan sebagai berikut:
+   
+   a. LoginController.php:
+   b. RegisterController.php:
+   c. ProfileController.php:
+   d. UserController.php:
 
-4. Subfolder Models: Folder ini berisi Model Eloquent di Laravel. Model ini berfungsi untuk berinteraksi dengan database menggunakan ORM Eloquent. Di dalam folder ini, terdapat file Admin.php dan User.php. berikut penjelasannya:
+5. Subfolder Models: Folder ini berisi Model Eloquent di Laravel. Model ini berfungsi untuk berinteraksi dengan database menggunakan ORM Eloquent. Di dalam folder ini, terdapat file Admin.php dan User.php. berikut penjelasannya:
 
    a. Admin.php: Ini adalah file model untuk entitas Admin. Model ini berfungsi untuk mengelola data yang berhubungan dengan tabel admin dalam database.
       1) Namespace dan Penggunaan Trait
