@@ -59,7 +59,7 @@
         
 Terdapat juga file controller di dalam subfolder Auth dengan penjelasan seperti berikut:
 
-   a. AuthenticatedSessionController.php
+    e. AuthenticatedSessionController.php
       1) Fungsi create
          - Fungsi ini digunakan untuk menampilkan halaman login kepada pengguna.
          - return view('auth.login');: Fungsi ini akan mengembalikan tampilan (view) auth.login, yang berisi formulir login untuk pengguna. Ini adalah halaman yang pertama kali dilihat oleh pengguna yang ingin masuk ke aplikasi.
@@ -67,7 +67,7 @@ Terdapat juga file controller di dalam subfolder Auth dengan penjelasan seperti 
          - Fungsi ini menangani autentikasi pengguna, yang memvalidasi kredensial login dan memulai sesi pengguna.
          - $request->authenticate();: Menggunakan metode authenticate yang didefinisikan dalam LoginRequest (sebuah kelas custom untuk validasi login).
          
-   b. ConfirmablePasswordController.php
+    f. ConfirmablePasswordController.php
       1) Fungsi show
          - Fungsi ini menampilkan halaman untuk meminta pengguna mengonfirmasi password mereka.
       2) Fungsi store
@@ -76,21 +76,21 @@ Terdapat juga file controller di dalam subfolder Auth dengan penjelasan seperti 
          - $request->session()->put('auth.password_confirmed_at', time());: Jika password yang dimasukkan benar, maka waktu konfirmasi password disimpan di session dengan key 'auth.password_confirmed_at'. Ini menunjukkan bahwa pengguna telah mengonfirmasi password mereka, dan bisa mengakses fitur yang membutuhkan konfirmasi password.
          - return redirect()->intended(route('dashboard', absolute: false));: Setelah berhasil mengonfirmasi password, pengguna akan diarahkan ke halaman yang mereka tuju sebelumnya (misalnya, dashboard atau halaman yang terlindungi).
          
-   c. EmailVerificationNotificationController.php
+     g. EmailVerificationNotificationController.php
       1) Fungsi store
          - $request->user()->hasVerifiedEmail(): Fungsi ini memeriksa apakah pengguna yang saat ini login sudah memverifikasi email mereka. Fungsi ini mengembalikan true jika email sudah diverifikasi, dan false jika belum.
          - return redirect()->intended(route('dashboard', absolute: false));: Jika pengguna sudah memverifikasi email mereka, maka pengguna langsung diarahkan ke halaman yang mereka tuju sebelumnya dengan redirect()->intended(). Jika tidak ada halaman yang diminta sebelumnya, pengguna akan diarahkan ke halaman dashboard.
          - $request->user()->sendEmailVerificationNotification();: Jika email pengguna belum diverifikasi, maka fungsi ini akan mengirimkan kembali notifikasi verifikasi email ke alamat email pengguna yang terdaftar. Metode ini mengirimkan link verifikasi untuk memverifikasi email pengguna.
          - return back()->with('status', 'verification-link-sent');: Setelah mengirimkan notifikasi verifikasi email, pengguna akan diarahkan kembali ke halaman sebelumnya dan pesan "verification-link-sent" akan dikirimkan ke session dengan with('status', 'verification-link-sent').
          
-   d. EmailVerificationPromptController.php
+     h. EmailVerificationPromptController.php
       1) Fungsi __invoke
          - __invoke: __invoke adalah fungsi khusus di PHP yang memungkinkan objek controller untuk dipanggil sebagai fungsi.
          - $request->user()->hasVerifiedEmail(): Fungsi ini memeriksa apakah pengguna yang sedang login sudah memverifikasi email mereka.
          - hasVerifiedEmail() mengembalikan true jika email pengguna sudah diverifikasi, dan false jika belum.
          - redirect()->intended(route('dashboard', absolute: false)): Jika email sudah diverifikasi, pengguna akan diarahkan ke halaman yang mereka coba akses sebelumnya dengan menggunakan redirect()->intended().
          - view('auth.verify-email'): Jika email belum diverifikasi, maka pengguna akan diarahkan ke halaman verifikasi email, yang merupakan tampilan (view) auth.verify-email.
-   e. NewPasswordController.php
+     i. NewPasswordController.php
       1) Fungsi create
          - Fungsi ini digunakan untuk menampilkan halaman formulir reset password kepada pengguna.
          - return view('auth.reset-password', ['request' => $request]);: Mengembalikan tampilan (view) auth.reset-password yang berisi form untuk mengatur ulang password.
