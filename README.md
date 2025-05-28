@@ -3,7 +3,7 @@
 2. Folder app: Folder utama tempat kode aplikasi berada. Di dalam folder app, terdapat beberapa subfolder, termasuk Http, yang digunakan untuk menyimpan kontroler, middleware, dan request yang digunakan oleh aplikasi.
 
 3. Subfolder Http: Folder ini berisi file yang terkait dengan HTTP request, seperti Controllers, Middleware, dan Requests. File-file di sini digunakan untuk menangani request yang datang dari pengguna (browser, API, dll.). Terdapat file controllers dengan penjelasan sebagai berikut:
-   
+  
    a. LoginController.php: LoginController menangani proses login dan logout untuk pengguna. Fungsi utama dari controller ini adalah untuk memverifikasi kredensial pengguna dan mengelola sesi login.
       1) Fungsi login
          - Fungsi ini menerima data yang dikirimkan oleh pengguna melalui form login, yaitu role (admin atau user), email, dan password.
@@ -56,6 +56,54 @@
          - $user = User::findOrFail($id);: Mencari data pengguna berdasarkan ID. Jika pengguna tidak ditemukan, maka akan melemparkan pengecualian (exception).
       4) Fungsi update
          - $user = User::findOrFail($id);: Mencari data pengguna berdasarkan ID. Jika pengguna tidak ditemukan, maka akan melemparkan pengecualian (exception).
+        
+Terdapat juga file controller di dalam subfolder Auth dengan penjelasan seperti berikut:
+   a. AuthenticatedSessionController.php
+      1) Fungsi create
+         - Fungsi ini digunakan untuk menampilkan halaman login kepada pengguna.
+         - return view('auth.login');: Fungsi ini akan mengembalikan tampilan (view) auth.login, yang berisi formulir login untuk pengguna. Ini adalah halaman yang pertama kali dilihat oleh pengguna yang ingin masuk ke aplikasi.
+      2) Fungsi store
+         - Fungsi ini menangani autentikasi pengguna, yang memvalidasi kredensial login dan memulai sesi pengguna.
+         - $request->authenticate();: Menggunakan metode authenticate yang didefinisikan dalam LoginRequest (sebuah kelas custom untuk validasi login).
+         
+   b. ConfirmablePasswordController.php
+      1) Fungsi show
+         - Fungsi ini menampilkan halaman untuk meminta pengguna mengonfirmasi password mereka.
+      2) Fungsi store
+         - Auth::guard('web')->validate([...]);: Fungsi ini digunakan untuk memverifikasi kredensial pengguna (email dan password). Jika password yang dimasukkan oleh pengguna tidak valid, maka akan mengembalikan false. guard('web') memastikan bahwa yang digunakan adalah session guard standar untuk pengguna biasa (bukan admin atau jenis guard lainnya).
+         - throw ValidationException::withMessages([...]);: Jika password yang dimasukkan tidak sesuai, maka fungsi ini akan melemparkan pengecualian (exception) dengan pesan kesalahan "auth.password", yang biasanya berarti "Password salah."
+         - $request->session()->put('auth.password_confirmed_at', time());: Jika password yang dimasukkan benar, maka waktu konfirmasi password disimpan di session dengan key 'auth.password_confirmed_at'. Ini menunjukkan bahwa pengguna telah mengonfirmasi password mereka, dan bisa mengakses fitur yang membutuhkan konfirmasi password.
+         - return redirect()->intended(route('dashboard', absolute: false));: Setelah berhasil mengonfirmasi password, pengguna akan diarahkan ke halaman yang mereka tuju sebelumnya (misalnya, dashboard atau halaman yang terlindungi).
+         
+   c. EmailVerificationNotificationController.php
+      1) Fungsi store
+         - $request->user()->hasVerifiedEmail(): Fungsi ini memeriksa apakah pengguna yang saat ini login sudah memverifikasi email mereka. Fungsi ini mengembalikan true jika email sudah diverifikasi, dan false jika belum.
+         - return redirect()->intended(route('dashboard', absolute: false));: Jika pengguna sudah memverifikasi email mereka, maka pengguna langsung diarahkan ke halaman yang mereka tuju sebelumnya dengan redirect()->intended(). Jika tidak ada halaman yang diminta sebelumnya, pengguna akan diarahkan ke halaman dashboard.
+         - $request->user()->sendEmailVerificationNotification();: Jika email pengguna belum diverifikasi, maka fungsi ini akan mengirimkan kembali notifikasi verifikasi email ke alamat email pengguna yang terdaftar. Metode ini mengirimkan link verifikasi untuk memverifikasi email pengguna.
+         - return back()->with('status', 'verification-link-sent');: Setelah mengirimkan notifikasi verifikasi email, pengguna akan diarahkan kembali ke halaman sebelumnya dan pesan "verification-link-sent" akan dikirimkan ke session dengan with('status', 'verification-link-sent').
+         
+   d. EmailVerificationPromptController.php
+      1) Fungsi __invoke
+         - __invoke: __invoke adalah fungsi khusus di PHP yang memungkinkan objek controller untuk dipanggil sebagai fungsi.
+         - $request->user()->hasVerifiedEmail(): Fungsi ini memeriksa apakah pengguna yang sedang login sudah memverifikasi email mereka.
+         - hasVerifiedEmail() mengembalikan true jika email pengguna sudah diverifikasi, dan false jika belum.
+         - redirect()->intended(route('dashboard', absolute: false)): Jika email sudah diverifikasi, pengguna akan diarahkan ke halaman yang mereka coba akses sebelumnya dengan menggunakan redirect()->intended().
+         - view('auth.verify-email'): Jika email belum diverifikasi, maka pengguna akan diarahkan ke halaman verifikasi email, yang merupakan tampilan (view) auth.verify-email.
+   e. NewPasswordController.php
+      1) Fungsi create
+         - Fungsi ini digunakan untuk menampilkan halaman formulir reset password kepada pengguna.
+         - return view('auth.reset-password', ['request' => $request]);: Mengembalikan tampilan (view) auth.reset-password yang berisi form untuk mengatur ulang password.
+         - ['request' => $request]: Mengirimkan objek request ke view agar bisa digunakan, terutama untuk menampilkan token reset yang dibutuhkan dalam proses reset password.
+      2) Fungsi store
+         - Fungsi ini menangani permintaan reset password baru yang diajukan oleh pengguna.
+         - Password::reset([...]): Fungsi ini mencoba mereset password pengguna berdasarkan data yang diberikan (email, password, password_confirmation, dan token).
+         - Jika reset password berhasil, callback function akan dijalankan. Dalam callback ini, password pengguna diupdate dengan yang baru dan di-hash menggunakan Hash::make().
+         - remember_token juga diperbarui dengan nilai acak baru yang dibuat menggunakan Str::random(60).
+         - event(new PasswordReset($user));: Setelah password diperbarui, event PasswordReset dipicu, yang memungkinkan Anda untuk menjalankan logika lebih lanjut (misalnya, mengirim email pemberitahuan atau log aktivitas).
+         - if ($status == Password::PASSWORD_RESET): Jika password berhasil di-reset (status berhasil), pengguna akan diarahkan ke halaman login dengan pesan sukses.
+         - redirect()->route('login'): Pengguna diarahkan ke halaman login setelah reset password berhasil, dan status pesan reset akan ditampilkan menggunakan with('status', __($status)).
+         - back()->withInput($request->only('email')): Jika terjadi kesalahan dalam reset password, pengguna akan diarahkan kembali ke halaman sebelumnya dengan input email yang telah diisi sebelumnya.
+         - withErrors(['email' => __($status)]): Menampilkan pesan error terkait kesalahan dalam proses reset password.
 
 5. Subfolder Models: Folder ini berisi Model Eloquent di Laravel. Model ini berfungsi untuk berinteraksi dengan database menggunakan ORM Eloquent. Di dalam folder ini, terdapat file Admin.php dan User.php. berikut penjelasannya:
 
