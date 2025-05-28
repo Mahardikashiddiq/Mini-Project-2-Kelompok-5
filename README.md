@@ -42,11 +42,11 @@
          - Jika pengguna meng-upload gambar profil baru, file tersebut disimpan di folder public/profile_pictures, dan path gambar yang disimpan di database akan diperbarui.
 
     d. UserController.php: UserController digunakan untuk mengelola pengguna, seperti menambah, menghapus, memperbarui data pengguna, dan menampilkan daftar pengguna.
-       1) Fungsi index
+      1) Fungsi index
            - Session::get('admin'): Fungsi ini mengambil data sesi yang disimpan untuk admin. Biasanya digunakan untuk memastikan bahwa hanya admin yang dapat mengakses daftar pengguna atau melakukan operasi tertentu.
            - $users = User::all();: Mengambil semua data pengguna (User) dari tabel users di database menggunakan model User.
            - return view('tambah_user', ['users' => $users]);: Mengembalikan tampilan (view) tambah_user dan mengirimkan data users ke tampilan tersebut. Data ini digunakan untuk menampilkan daftar pengguna di halaman tersebut.
-       2) Fungsi store
+      2) Fungsi store
          - $request->validate([...]);: Fungsi ini memvalidasi input dari pengguna.
          - Jika pengguna meng-upload gambar avatar, file gambar tersebut akan disimpan di direktori public/avatars. Path dari gambar avatar disimpan dalam variabel $avatarPath.
       3) Fungsi destroy
@@ -75,7 +75,7 @@
          - return redirect()->intended(route('dashboard', absolute: false));: Setelah berhasil mengonfirmasi password, pengguna akan diarahkan ke halaman yang mereka tuju sebelumnya (misalnya, dashboard atau halaman yang terlindungi).
          
     g. EmailVerificationNotificationController.php
-       1) Fungsi store
+      1) Fungsi store
          - $request->user()->hasVerifiedEmail(): Fungsi ini memeriksa apakah pengguna yang saat ini login sudah memverifikasi email mereka. Fungsi ini mengembalikan true jika email sudah diverifikasi, dan false jika belum.
          - return redirect()->intended(route('dashboard', absolute: false));: Jika pengguna sudah memverifikasi email mereka, maka pengguna langsung diarahkan ke halaman yang mereka tuju sebelumnya dengan redirect()->intended(). Jika tidak ada halaman yang diminta sebelumnya, pengguna akan diarahkan ke halaman dashboard.
          - $request->user()->sendEmailVerificationNotification();: Jika email pengguna belum diverifikasi, maka fungsi ini akan mengirimkan kembali notifikasi verifikasi email ke alamat email pengguna yang terdaftar. Metode ini mengirimkan link verifikasi untuk memverifikasi email pengguna.
