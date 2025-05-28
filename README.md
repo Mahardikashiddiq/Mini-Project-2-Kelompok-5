@@ -4,7 +4,7 @@
 
 3. Subfolder Http: Folder ini berisi file yang terkait dengan HTTP request, seperti Controllers, Middleware, dan Requests. File-file di sini digunakan untuk menangani request yang datang dari pengguna (browser, API, dll.). Terdapat file controllers dengan penjelasan sebagai berikut:
    
-   a. LoginController.php:
+   a. LoginController.php: LoginController menangani proses login dan logout untuk pengguna. Fungsi utama dari controller ini adalah untuk memverifikasi kredensial pengguna dan mengelola sesi login.
       1) Fungsi login
          - Fungsi ini menerima data yang dikirimkan oleh pengguna melalui form login, yaitu role (admin atau user), email, dan password.
          - Berdasarkan nilai role, menentukan tabel yang akan digunakan untuk mencari data pengguna di database. Jika role adalah 'admin', maka tabel yang digunakan adalah admin; jika role adalah 'user', maka tabel yang digunakan adalah user.
@@ -26,7 +26,7 @@
          - Session::forget('user');: Menghapus data pengguna dari session menggunakan forget(), yang berarti sesi pengguna akan dihapus dan mereka akan keluar dari aplikasi.
          - return redirect('/')->with('message', 'Logout berhasil!');: Setelah logout, pengguna akan diarahkan kembali ke halaman utama (/) atau halaman login dengan pesan "Logout berhasil!" yang ditampilkan.
 
-   c. ProfileController.php:
+   c. ProfileController.php: ProfileController mengelola tampilan dan pembaruan data profil pengguna, baik untuk admin maupun user.
       1) Fungsi showEditProfileForm
          - Session::get('user') ?? Session::get('admin') mencoba mengambil data pengguna berdasarkan key user atau admin. Jika pengguna belum login (data tidak ditemukan), maka pengguna akan diarahkan ke halaman login dengan return redirect()->route('login').
          - Berdasarkan role yang ada, kode ini akan mengambil data pengguna yang sesuai dari tabel Admin atau User menggunakan query where('email', $sessionUser['email']). Jika role adalah admin, maka data diambil dari model Admin, jika tidak dari model User.
@@ -41,7 +41,7 @@
          - if ($validator->fails()): Jika validasi gagal, fungsi ini mengembalikan response JSON dengan status false dan pesan "Validasi gagal" beserta rincian kesalahan validasi.
          - Jika pengguna meng-upload gambar profil baru, file tersebut disimpan di folder public/profile_pictures, dan path gambar yang disimpan di database akan diperbarui.
            
-   d. UserController.php:
+   d. UserController.php: UserController digunakan untuk mengelola pengguna, seperti menambah, menghapus, memperbarui data pengguna, dan menampilkan daftar pengguna.
       1) Fungsi index
          - Session::get('admin'): Fungsi ini mengambil data sesi yang disimpan untuk admin. Biasanya digunakan untuk memastikan bahwa hanya admin yang dapat mengakses daftar pengguna atau melakukan operasi tertentu.
          - $users = User::all();: Mengambil semua data pengguna (User) dari tabel users di database menggunakan model User.
