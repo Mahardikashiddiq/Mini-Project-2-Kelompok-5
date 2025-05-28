@@ -41,8 +41,8 @@
          - if ($validator->fails()): Jika validasi gagal, fungsi ini mengembalikan response JSON dengan status false dan pesan "Validasi gagal" beserta rincian kesalahan validasi.
          - Jika pengguna meng-upload gambar profil baru, file tersebut disimpan di folder public/profile_pictures, dan path gambar yang disimpan di database akan diperbarui.
            
-   d. UserController.php: UserController digunakan untuk mengelola pengguna, seperti menambah, menghapus, memperbarui data pengguna, dan menampilkan daftar pengguna.
-      1) Fungsi index
+    d. UserController.php: UserController digunakan untuk mengelola pengguna, seperti menambah, menghapus, memperbarui data pengguna, dan menampilkan daftar pengguna.
+       1) Fungsi index
          - Session::get('admin'): Fungsi ini mengambil data sesi yang disimpan untuk admin. Biasanya digunakan untuk memastikan bahwa hanya admin yang dapat mengakses daftar pengguna atau melakukan operasi tertentu.
          - $users = User::all();: Mengambil semua data pengguna (User) dari tabel users di database menggunakan model User.
          - return view('tambah_user', ['users' => $users]);: Mengembalikan tampilan (view) tambah_user dan mengirimkan data users ke tampilan tersebut. Data ini digunakan untuk menampilkan daftar pengguna di halaman tersebut.
@@ -57,8 +57,6 @@
       4) Fungsi update
          - $user = User::findOrFail($id);: Mencari data pengguna berdasarkan ID. Jika pengguna tidak ditemukan, maka akan melemparkan pengecualian (exception).
         
-Terdapat juga file controller di dalam subfolder Auth dengan penjelasan seperti berikut:
-
     e. AuthenticatedSessionController.php
       1) Fungsi create
          - Fungsi ini digunakan untuk menampilkan halaman login kepada pengguna.
@@ -67,7 +65,7 @@ Terdapat juga file controller di dalam subfolder Auth dengan penjelasan seperti 
          - Fungsi ini menangani autentikasi pengguna, yang memvalidasi kredensial login dan memulai sesi pengguna.
          - $request->authenticate();: Menggunakan metode authenticate yang didefinisikan dalam LoginRequest (sebuah kelas custom untuk validasi login).
          
-    f. ConfirmablePasswordController.php
+   f. ConfirmablePasswordController.php
       1) Fungsi show
          - Fungsi ini menampilkan halaman untuk meminta pengguna mengonfirmasi password mereka.
       2) Fungsi store
@@ -76,8 +74,8 @@ Terdapat juga file controller di dalam subfolder Auth dengan penjelasan seperti 
          - $request->session()->put('auth.password_confirmed_at', time());: Jika password yang dimasukkan benar, maka waktu konfirmasi password disimpan di session dengan key 'auth.password_confirmed_at'. Ini menunjukkan bahwa pengguna telah mengonfirmasi password mereka, dan bisa mengakses fitur yang membutuhkan konfirmasi password.
          - return redirect()->intended(route('dashboard', absolute: false));: Setelah berhasil mengonfirmasi password, pengguna akan diarahkan ke halaman yang mereka tuju sebelumnya (misalnya, dashboard atau halaman yang terlindungi).
          
-     g. EmailVerificationNotificationController.php
-      1) Fungsi store
+    g. EmailVerificationNotificationController.php
+       1) Fungsi store
          - $request->user()->hasVerifiedEmail(): Fungsi ini memeriksa apakah pengguna yang saat ini login sudah memverifikasi email mereka. Fungsi ini mengembalikan true jika email sudah diverifikasi, dan false jika belum.
          - return redirect()->intended(route('dashboard', absolute: false));: Jika pengguna sudah memverifikasi email mereka, maka pengguna langsung diarahkan ke halaman yang mereka tuju sebelumnya dengan redirect()->intended(). Jika tidak ada halaman yang diminta sebelumnya, pengguna akan diarahkan ke halaman dashboard.
          - $request->user()->sendEmailVerificationNotification();: Jika email pengguna belum diverifikasi, maka fungsi ini akan mengirimkan kembali notifikasi verifikasi email ke alamat email pengguna yang terdaftar. Metode ini mengirimkan link verifikasi untuk memverifikasi email pengguna.
@@ -105,6 +103,12 @@ Terdapat juga file controller di dalam subfolder Auth dengan penjelasan seperti 
          - redirect()->route('login'): Pengguna diarahkan ke halaman login setelah reset password berhasil, dan status pesan reset akan ditampilkan menggunakan with('status', __($status)).
          - back()->withInput($request->only('email')): Jika terjadi kesalahan dalam reset password, pengguna akan diarahkan kembali ke halaman sebelumnya dengan input email yang telah diisi sebelumnya.
          - withErrors(['email' => __($status)]): Menampilkan pesan error terkait kesalahan dalam proses reset password.
+      
+        
+        
+Terdapat juga file controller di dalam subfolder Auth dengan penjelasan seperti berikut:
+
+
 
 5. Subfolder Models: Folder ini berisi Model Eloquent di Laravel. Model ini berfungsi untuk berinteraksi dengan database menggunakan ORM Eloquent. Di dalam folder ini, terdapat file Admin.php dan User.php. berikut penjelasannya:
 
