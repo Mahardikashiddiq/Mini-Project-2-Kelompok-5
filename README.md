@@ -58,6 +58,7 @@
          - $user = User::findOrFail($id);: Mencari data pengguna berdasarkan ID. Jika pengguna tidak ditemukan, maka akan melemparkan pengecualian (exception).
         
 Terdapat juga file controller di dalam subfolder Auth dengan penjelasan seperti berikut:
+
    a. AuthenticatedSessionController.php
       1) Fungsi create
          - Fungsi ini digunakan untuk menampilkan halaman login kepada pengguna.
