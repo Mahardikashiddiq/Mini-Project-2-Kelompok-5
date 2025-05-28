@@ -1,3 +1,11 @@
+MINI PROJECT KELOMPOK 5
+1. Dian Islami               : 2308107010048
+2. Anisa Ramadhani           : 2308107010008
+3. Mahardika Shiddiq Anshari : 2308107010032
+4. Riyan Hadi Samudra        : 2308107010068
+
+
+
 1. Folder .github: Digunakan untuk menyimpan konfigurasi terkait GitHub, seperti workflow untuk Continuous Integration/Continuous Deployment (CI/CD). Folder ini tidak berhubungan langsung dengan kode aplikasi, tetapi dengan proses pengembangan dan pengelolaan proyek di GitHub.
 
 2. Folder app: Folder utama tempat kode aplikasi berada. Di dalam folder app, terdapat beberapa subfolder, termasuk Http, yang digunakan untuk menyimpan kontroler, middleware, dan request yang digunakan oleh aplikasi.
