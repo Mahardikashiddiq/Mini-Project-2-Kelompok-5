@@ -242,3 +242,14 @@ Halaman landing atau beranda awal aplikasi.
 - Informasi umum tentang aplikasi atau instruksi login
 - Bisa juga berfungsi sebagai halaman publik sebelum login
 
+## 11. web.php
+
+### Deskripsi
+sistem berbasis Laravel yang menyediakan fitur login, registrasi, manajemen profil pengguna, dan beberapa tampilan halaman seperti admin, user, produk, transaksi, dan statistik.
+
+### Fitur Umum:
+- Login dan logout pengguna
+- Registrasi pengguna baru
+- Pengelolaan profil pengguna
+- Manajemen user (tambah, edit, hapus)
+- Halaman admin, user, produk, transaksi, dan statistik
