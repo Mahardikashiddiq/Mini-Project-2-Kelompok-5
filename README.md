@@ -5,8 +5,33 @@
 3. Subfolder Http: Folder ini berisi file yang terkait dengan HTTP request, seperti Controllers, Middleware, dan Requests. File-file di sini digunakan untuk menangani request yang datang dari pengguna (browser, API, dll.). Terdapat file controllers dengan penjelasan sebagai berikut:
    
    a. LoginController.php:
+      1) Fungsi login
+         - Fungsi ini menerima data yang dikirimkan oleh pengguna melalui form login, yaitu role (admin atau user), email, dan password.
+         - Berdasarkan nilai role, menentukan tabel yang akan digunakan untuk mencari data pengguna di database. Jika role adalah 'admin', maka tabel yang digunakan adalah admin; jika role adalah 'user', maka tabel yang digunakan adalah user.
+         - Fungsi DB::table($table)->where('email', $email)->first() digunakan untuk mencari pengguna berdasarkan email di tabel yang sesuai (admin atau user).
+         - Fungsi Hash::check($password, $user->password) digunakan untuk memeriksa apakah password yang dimasukkan cocok dengan password yang ada di database. Jika password salah, maka akan mengembalikan response JSON dengan status false dan pesan "Password salah."
+         - Jika login berhasil, data pengguna (seperti email, role, nama, alamat, dan lainnya) disimpan ke dalam session dengan menggunakan Session::put(). Session yang digunakan berbeda-beda tergantung pada apakah pengguna adalah admin atau user.
+      2) Fungsi Logout
+         - Fungsi ini menghapus data pengguna dari session dengan menggunakan $request->session()->forget('user'). Dengan menghapus session ini, pengguna dianggap sudah keluar dari aplikasi dan tidak dapat mengakses halaman yang dilindungi tanpa login kembali.
+         - Setelah session dihapus, pengguna akan diarahkan kembali ke halaman utama atau halaman login menggunakan return redirect('/'). Pada saat yang sama, pesan "Logout berhasil!" ditambahkan ke session dengan menggunakan with().
+
    b. RegisterController.php:
+      
    c. ProfileController.php:
+      1) Fungsi showEditProfileForm
+         - Session::get('user') ?? Session::get('admin') mencoba mengambil data pengguna berdasarkan key user atau admin. Jika pengguna belum login (data tidak ditemukan), maka pengguna akan diarahkan ke halaman login dengan return redirect()->route('login').
+         - Berdasarkan role yang ada, kode ini akan mengambil data pengguna yang sesuai dari tabel Admin atau User menggunakan query where('email', $sessionUser['email']). Jika role adalah admin, maka data diambil dari model Admin, jika tidak dari model User.
+         - Jika data pengguna tidak ditemukan (!$user), pengguna akan diarahkan kembali ke halaman profil dengan pesan kesalahan menggunakan return redirect()->route('profil')->with('error', 'User tidak ditemukan').
+         - Jika data pengguna ditemukan, maka fungsi ini akan menampilkan halaman profil dan mengirimkan data pengguna dan role ke view tersebut.
+      2) Fungsi update
+         - $sessionUser = Session::get('user') ?? Session::get('admin');: Mengambil data pengguna yang login dari session (user atau admin). Jika session user tidak ada, maka akan mengambil session admin.
+         - if (!$sessionUser): Mengecek apakah pengguna sudah login dengan memeriksa session. Jika tidak ada data pengguna dalam session, maka mengembalikan response JSON dengan status false dan pesan "Anda belum login."
+         - $validator = Validator::make($request->all(), [...]);: Menggunakan Laravel's Validator untuk memvalidasi input yang dikirimkan dalam form. Validasi yang diterapkan meliputi:
+            - nama: Harus diisi dan berupa string dengan panjang maksimal 255 karakter.
+            - address, bio, phone: Bersifat opsional, tetapi jika diisi, harus berupa string dengan panjang maksimal yang sesuai.
+         - if ($validator->fails()): Jika validasi gagal, fungsi ini mengembalikan response JSON dengan status false dan pesan "Validasi gagal" beserta rincian kesalahan validasi.
+         - Jika pengguna meng-upload gambar profil baru, file tersebut disimpan di folder public/profile_pictures, dan path gambar yang disimpan di database akan diperbarui.
+           
    d. UserController.php:
 
 5. Subfolder Models: Folder ini berisi Model Eloquent di Laravel. Model ini berfungsi untuk berinteraksi dengan database menggunakan ORM Eloquent. Di dalam folder ini, terdapat file Admin.php dan User.php. berikut penjelasannya:
