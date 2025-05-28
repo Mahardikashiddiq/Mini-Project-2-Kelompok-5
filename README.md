@@ -15,8 +15,17 @@
          - Fungsi ini menghapus data pengguna dari session dengan menggunakan $request->session()->forget('user'). Dengan menghapus session ini, pengguna dianggap sudah keluar dari aplikasi dan tidak dapat mengakses halaman yang dilindungi tanpa login kembali.
          - Setelah session dihapus, pengguna akan diarahkan kembali ke halaman utama atau halaman login menggunakan return redirect('/'). Pada saat yang sama, pesan "Logout berhasil!" ditambahkan ke session dengan menggunakan with().
 
-   b. RegisterController.php:
-      
+   b. RegisterController.php: Fungsi utama dari controller ini adalah untuk mengelola pendaftaran pengguna baru (register) dan proses logout (logout).
+      1) Fungsi register
+         - $validated = $request->validate([...]);: Fungsi ini melakukan validasi terhadap data yang dikirimkan oleh pengguna melalui form.
+         - if ($role === 'admin'): Memeriksa apakah role yang dimasukkan adalah 'admin'. Jika iya, maka pendaftaran akan ditolak dengan mengembalikan response JSON yang memberi tahu bahwa "Admin tidak bisa Sign Up."
+         - $existingUser = DB::table('user')->where('email', $email)->first();: Mencari apakah sudah ada pengguna dengan email yang sama di database pada tabel user.
+         - Session::put('user', [...]);: Menyimpan data pengguna yang baru disimpan ke dalam session, sehingga mereka otomatis login setelah pendaftaran berhasil.
+      2) Fungsi logout
+         - public function logout(Request $request): Mendeklarasikan fungsi logout yang bertanggung jawab untuk menangani proses logout pengguna.
+         - Session::forget('user');: Menghapus data pengguna dari session menggunakan forget(), yang berarti sesi pengguna akan dihapus dan mereka akan keluar dari aplikasi.
+         - return redirect('/')->with('message', 'Logout berhasil!');: Setelah logout, pengguna akan diarahkan kembali ke halaman utama (/) atau halaman login dengan pesan "Logout berhasil!" yang ditampilkan.
+
    c. ProfileController.php:
       1) Fungsi showEditProfileForm
          - Session::get('user') ?? Session::get('admin') mencoba mengambil data pengguna berdasarkan key user atau admin. Jika pengguna belum login (data tidak ditemukan), maka pengguna akan diarahkan ke halaman login dengan return redirect()->route('login').
@@ -33,6 +42,20 @@
          - Jika pengguna meng-upload gambar profil baru, file tersebut disimpan di folder public/profile_pictures, dan path gambar yang disimpan di database akan diperbarui.
            
    d. UserController.php:
+      1) Fungsi index
+         - Session::get('admin'): Fungsi ini mengambil data sesi yang disimpan untuk admin. Biasanya digunakan untuk memastikan bahwa hanya admin yang dapat mengakses daftar pengguna atau melakukan operasi tertentu.
+         - $users = User::all();: Mengambil semua data pengguna (User) dari tabel users di database menggunakan model User.
+         - return view('tambah_user', ['users' => $users]);: Mengembalikan tampilan (view) tambah_user dan mengirimkan data users ke tampilan tersebut. Data ini digunakan untuk menampilkan daftar pengguna di halaman tersebut.
+      2) Fungsi store
+         - $request->validate([...]);: Fungsi ini memvalidasi input dari pengguna.
+         - Jika pengguna meng-upload gambar avatar, file gambar tersebut akan disimpan di direktori public/avatars. Path dari gambar avatar disimpan dalam variabel $avatarPath.
+      3) Fungsi destroy
+         - $user = User::findOrFail($id);: Mencari data pengguna berdasarkan ID yang diberikan. Jika pengguna tidak ditemukan, maka findOrFail akan melemparkan pengecualian (exception).
+         - $user->delete();: Menghapus pengguna yang ditemukan dari database.
+         - return response()->json([...]);: Jika penghapusan berhasil, fungsi ini mengembalikan response JSON dengan status success: true. Jika gagal, mengembalikan pesan kesalahan.
+         - $user = User::findOrFail($id);: Mencari data pengguna berdasarkan ID. Jika pengguna tidak ditemukan, maka akan melemparkan pengecualian (exception).
+      4) Fungsi update
+         - $user = User::findOrFail($id);: Mencari data pengguna berdasarkan ID. Jika pengguna tidak ditemukan, maka akan melemparkan pengecualian (exception).
 
 5. Subfolder Models: Folder ini berisi Model Eloquent di Laravel. Model ini berfungsi untuk berinteraksi dengan database menggunakan ORM Eloquent. Di dalam folder ini, terdapat file Admin.php dan User.php. berikut penjelasannya:
 
@@ -52,7 +75,7 @@
       5) Pengaturan Timestamps
          - public $timestamps = true;: Laravel secara default mengelola kolom created_at dan updated_at pada setiap tabel. Dengan mengatur properti ini ke true, Laravel akan otomatis mengisi kolom created_at dan updated_at ketika data dibuat atau diperbarui.
 
-   b. User.php: Ini adalah model untuk entitas User di aplikasi Anda. Model ini berfungsi untuk mengelola data yang berhubungan dengan tabel users dalam database.
+   b. User.php: Ini adalah model untuk entitas User. Model ini berfungsi untuk mengelola data yang berhubungan dengan tabel users dalam database.
       1) Deklarasi Kelas User
          - class User extends Model: Kelas User adalah model yang mewakili data pengguna (user) dalam aplikasi. Kelas ini mewarisi dari Model, sehingga dapat berinteraksi langsung dengan tabel yang terhubung (dalam hal ini tabel user) menggunakan metode Eloquent.
       2) Menentukan Nama Tabel
