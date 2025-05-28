@@ -130,3 +130,107 @@
       3) Menentukan Kolom yang Bisa Diisi
          - protected $fillable: Properti ini digunakan untuk menentukan kolom mana yang dapat diisi melalui mass assignment. Artinya, saat membuat atau memperbarui data pengguna menggunakan metode seperti User::create(), hanya kolom-kolom yang terdaftar dalam array $fillable yang dapat diisi. Ini adalah langkah keamanan untuk mencegah Mass Assignment Vulnerability.
          - Kolom yang dapat diisi di sini adalah email, password, nama, address, bio, phone, dan profile_picture. Ini berarti bahwa saat membuat atau memperbarui pengguna, pengguna dapat memberikan nilai untuk kolom-kolom ini.
+
+#Laravel Blade Views Documentation
+Dokumentasi ini menjelaskan fungsi dan struktur dari seluruh file Blade Laravel yang digunakan dalam proyek ini. Setiap file berfungsi sebagai bagian dari antarmuka pengguna (UI) untuk aplikasi berbasis Laravel.
+
+## 1. admin.blade.php
+
+### Deskripsi:
+File ini berisi tampilan untuk halaman admin. Umumnya digunakan untuk mengatur akses dan kontrol konten oleh administrator aplikasi.
+
+### Fitur Umum:
+- Navigasi ke berbagai bagian sistem admin
+- Pengelolaan data pengguna, produk, atau konten
+- Layout menggunakan komponen CSS
+
+## 2. dashboard.blade.php
+
+### Deskripsi:
+Merupakan tampilan utama setelah pengguna login. Menampilkan informasi ringkasan atau statistik utama aplikasi.
+
+### Fitur Umum:
+- Menampilkan informasi dinamis seperti jumlah produk, pengguna, transaksi, dll.
+- Biasanya memanfaatkan grafik atau kartu statistik
+- Akses cepat ke fitur utama aplikasi
+
+## 3. login.blade.php
+
+### Deskripsi:
+Tampilan halaman login untuk pengguna aplikasi.
+
+### Fitur Umum:
+- Form autentikasi (email dan password)
+- Validasi input dan error message
+- Link ke halaman pendaftaran atau reset password (jika tersedia)
+
+## 4. produk.blade.php
+
+### Deskripsi:
+Halaman ini digunakan untuk menampilkan daftar produk atau mengelola entri produk dalam sistem.
+
+### Fitur Umum:
+- Menampilkan daftar produk (dengan nama, harga, stok, dll.)
+- Fungsi tambah, edit, hapus produk
+- Bisa dilengkapi dengan fitur pencarian dan filter
+
+## 5. profil.blade.php
+
+### Deskripsi:
+Menampilkan dan mengatur informasi profil pengguna.
+
+### Fitur Umum:
+- Form untuk mengedit nama, email, password, dsb.
+- Menampilkan data pengguna secara personal
+- Validasi dan feedback update profil
+
+## 6. statistik.blade.php
+
+### Deskripsi:
+Menampilkan data statistik yang berhubungan dengan aktivitas dalam aplikasi, seperti transaksi, pengguna aktif, atau produk terjual.
+
+### Fitur Umum:
+- Visualisasi data (grafik batang, pie chart, dsb.)
+- Ringkasan performa aplikasi
+- Biasanya digunakan oleh admin atau manajer
+
+## 7. tambah_user.blade.php
+
+### Deskripsi:
+Formulir untuk menambahkan pengguna baru ke dalam sistem.
+
+### Fitur Umum:
+- Input data seperti nama, email, password, dan peran (role)
+- Validasi input dan notifikasi error
+- Navigasi kembali ke daftar pengguna
+
+## 8. transaksi.blade.php
+
+### Deskripsi:
+Halaman ini mengatur dan menampilkan daftar transaksi atau pembelian.
+
+### Fitur Umum:
+- Daftar transaksi dengan informasi seperti tanggal, jumlah, dan status
+- Tombol untuk melihat detail transaksi
+- Fitur filter atau pencarian transaksi berdasarkan kriteria tertentu
+
+## 9. user.blade.php
+
+### Deskripsi:
+Menampilkan daftar seluruh pengguna dalam sistem, serta kontrol untuk mengelola mereka.
+
+### Fitur Umum:
+- Daftar pengguna (nama, email, peran)
+- Aksi seperti edit, hapus, atau suspend pengguna
+- Integrasi dengan halaman tambah_user.blade.php untuk menambah pengguna baru
+
+## 10. welcome.blade.php
+
+### Deskripsi:
+Halaman landing atau beranda awal aplikasi.
+
+### Fitur Umum:
+- Tampilan selamat datang saat pertama kali membuka aplikasi
+- Informasi umum tentang aplikasi atau instruksi login
+- Bisa juga berfungsi sebagai halaman publik sebelum login
+
