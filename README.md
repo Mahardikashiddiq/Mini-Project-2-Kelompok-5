@@ -40,13 +40,13 @@
             - address, bio, phone: Bersifat opsional, tetapi jika diisi, harus berupa string dengan panjang maksimal yang sesuai.
          - if ($validator->fails()): Jika validasi gagal, fungsi ini mengembalikan response JSON dengan status false dan pesan "Validasi gagal" beserta rincian kesalahan validasi.
          - Jika pengguna meng-upload gambar profil baru, file tersebut disimpan di folder public/profile_pictures, dan path gambar yang disimpan di database akan diperbarui.
-           
+
     d. UserController.php: UserController digunakan untuk mengelola pengguna, seperti menambah, menghapus, memperbarui data pengguna, dan menampilkan daftar pengguna.
        1) Fungsi index
-         - Session::get('admin'): Fungsi ini mengambil data sesi yang disimpan untuk admin. Biasanya digunakan untuk memastikan bahwa hanya admin yang dapat mengakses daftar pengguna atau melakukan operasi tertentu.
-         - $users = User::all();: Mengambil semua data pengguna (User) dari tabel users di database menggunakan model User.
-         - return view('tambah_user', ['users' => $users]);: Mengembalikan tampilan (view) tambah_user dan mengirimkan data users ke tampilan tersebut. Data ini digunakan untuk menampilkan daftar pengguna di halaman tersebut.
-      2) Fungsi store
+           - Session::get('admin'): Fungsi ini mengambil data sesi yang disimpan untuk admin. Biasanya digunakan untuk memastikan bahwa hanya admin yang dapat mengakses daftar pengguna atau melakukan operasi tertentu.
+           - $users = User::all();: Mengambil semua data pengguna (User) dari tabel users di database menggunakan model User.
+           - return view('tambah_user', ['users' => $users]);: Mengembalikan tampilan (view) tambah_user dan mengirimkan data users ke tampilan tersebut. Data ini digunakan untuk menampilkan daftar pengguna di halaman tersebut.
+       2) Fungsi store
          - $request->validate([...]);: Fungsi ini memvalidasi input dari pengguna.
          - Jika pengguna meng-upload gambar avatar, file gambar tersebut akan disimpan di direktori public/avatars. Path dari gambar avatar disimpan dalam variabel $avatarPath.
       3) Fungsi destroy
@@ -103,12 +103,6 @@
          - redirect()->route('login'): Pengguna diarahkan ke halaman login setelah reset password berhasil, dan status pesan reset akan ditampilkan menggunakan with('status', __($status)).
          - back()->withInput($request->only('email')): Jika terjadi kesalahan dalam reset password, pengguna akan diarahkan kembali ke halaman sebelumnya dengan input email yang telah diisi sebelumnya.
          - withErrors(['email' => __($status)]): Menampilkan pesan error terkait kesalahan dalam proses reset password.
-      
-        
-        
-Terdapat juga file controller di dalam subfolder Auth dengan penjelasan seperti berikut:
-
-
 
 5. Subfolder Models: Folder ini berisi Model Eloquent di Laravel. Model ini berfungsi untuk berinteraksi dengan database menggunakan ORM Eloquent. Di dalam folder ini, terdapat file Admin.php dan User.php. berikut penjelasannya:
 
